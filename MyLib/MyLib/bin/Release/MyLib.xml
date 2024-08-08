@@ -1,0 +1,734 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyLib</name>
+    </assembly>
+    <members>
+        <member name="T:CommonClass.LibCsv">
+            <summary>
+            CSVファイル読み書き用クラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibCsv.Read(System.String,System.Boolean,System.Int64,System.String,System.String)">
+            <summary>
+            CSVを読み込みDataTableとして返す
+            </summary>
+            <param name="csvFilePath">CSVファイルのパス</param>
+            <param name="isHeader">true:ヘッダあり   false:なし</param>
+            <param name="limit">行数の限界値（デフォルト：long.MaxValue）</param>
+            <param name="encodeName">エンコード（デフォルト："shift-jis"）</param>
+            <param name="delimiter">区切り文字（デフォルト：自動判定）</param>
+            <returns>DataTable | CSVの内容を読み込んだDataTable   失敗：null</returns>
+        </member>
+        <member name="M:CommonClass.LibCsv.Write(System.Data.DataTable,System.String,System.Boolean,System.String,System.String,System.Boolean)">
+            <summary>
+            DataTableの内容をCSV形式でファイルに出力する
+            </summary>
+            <param name="dt">DataTable</param>
+            <param name="csvFilePath">CSVファイルのパス</param>
+            <param name="writeHeader">true:ヘッダあり   false:なし</param>
+            <param name="delimiter">区切り文字（デフォルト：","）</param>
+            <param name="encodeName">エンコード（デフォルト："shift-jis"）</param>
+            <param name="isAppend">true:追記する   false:上書きする（デフォルト）</param>
+        </member>
+        <member name="M:CommonClass.LibCsv.EncloseIfNeed(System.String)">
+            <summary>
+            指定された文字列が " で括る必要があれば、括って返します。
+            括る必要がなければ、そのまま返します。
+            </summary>
+            <param name="strField">文字列</param>
+            <returns>string | " で括った文字列（括る必要がなければ、そのまま）</returns>
+        </member>
+        <member name="M:CommonClass.LibCsv.GetDelimiter(System.String,System.Text.Encoding)">
+            <summary>
+            区切り文字の自動判定
+            </summary>
+            <param name="filePath">判定するファイルのパス</param>
+            <param name="encodeName">エンコード</param>
+            <returns>string | 区切り文字（"," or "\t"）</returns>
+        </member>
+        <member name="T:CommonClass.LibData">
+            <summary>
+            DataGridView, DataSet, DataTable関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibData.DataSetSave(System.Data.DataSet,System.String)">
+            <summary>
+            DataSetをファイル(XML形式)に保存する。
+            </summary>
+            <param name="ds">DataSet</param>
+            <param name="filePath">保存先のパス</param>
+            <returns>bool | true:成功   false:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataSetLoad(System.String)">
+            <summary>
+            DataSetをXMLファイルから読み込む。
+            </summary>
+            <param name="filePath">読み込むXMLファイルのパス</param>
+            <returns>DataSet | XMLファイルから読み込んだDataSet   null;失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataSetInsertAt(System.Data.DataSet,System.Data.DataTable,System.Int32)">
+            <summary>
+            指定されたDataSetに 指定されたDataTableを挿入したDataSetを返します。
+            挿入する位置はidxで指定します。
+            </summary>
+            <param name="ds">DataSet [in]</param>
+            <param name="dt">DataTable [in]</param>
+            <param name="idx">挿入する位置 [in]</param>
+            <returns>DataSet | DataTable挿入後のDataSet   失敗：null</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataSetTableUp(System.Data.DataSet,System.Int32)">
+            <summary>
+            指定されたDataSetの 指定されたインデックスのテーブルを １つ上のインデックスに移動する。
+            </summary>
+            <param name="ds">DataSet</param>
+            <param name="idx">移動するテーブルのインデックス</param>
+        </member>
+        <member name="M:CommonClass.LibData.DataSetTableDown(System.Data.DataSet,System.Int32)">
+            <summary>
+            指定されたDataSetの 指定されたインデックスのテーブルを １つ下のインデックスに移動する。
+            </summary>
+            <param name="ds">DataSet</param>
+            <param name="idx">移動するテーブルのインデックス</param>
+        </member>
+        <member name="M:CommonClass.LibData.DataTablePlus(System.Data.DataTable,System.Data.DataTable)">
+            <summary>
+            2つのDataTableの内容を足したものを返す。
+            ※dt1とdt2の列は同じものとする。
+            ※dt1の最後の行にdt2の全行を足したものを生成して返す。
+            </summary>
+            <param name="dt1">DataTable1</param>
+            <param name="dt2">DataTable2</param>
+            <returns>DataTable | 足した後のDataTable</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableToString(System.Data.DataTable,System.String)">
+            <summary>
+            DataTableの内容を文字列に変換する。
+            </summary>
+            <param name="dt">文字列に変換するDataTable</param>
+            <param name="delimiter">区切り文字（デフォルト："\t"）</param>
+            <returns>string | 変換後の文字列</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableFromString(System.String)">
+            <summary>
+            文字列の内容をDataTableに変換する。デリミタは\tとする。
+            文字列の１行目は列名とする。
+            </summary>
+            <param name="str">DataTableに変換する文字列</param>
+            <returns>DataTable | 変換後のDataTable</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableFromStringConvertEscapeSequence(System.String)">
+            <summary>
+            文字列の内容をDataTableに変換する。デリミタは\tとする。
+            文字列の１行目は列名とする。
+            各種エスケープシーケンスが文字列内にあれば、変換します。
+            </summary>
+            <param name="str">DataTableに変換する文字列</param>
+            <returns>DataTable | 変換後のDataTable</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableGetRowIndex(System.Data.DataTable,System.String,System.String)">
+            <summary>
+            指定されたDataTableの 指定された列から searchWordを検索して 最初に見つかったrowIndexを返す。
+            </summary>
+            <param name="dt">検索するDataTable</param>
+            <param name="colName">検索する列名</param>
+            <param name="searchWord">検索ワード</param>
+            <returns>int | 最初に見つかったrowIndex   -1:見つからなかった</returns>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableInsertAtNewRow(System.Data.DataTable,System.Int32)">
+            <summary>
+            指定されたDataTableの 指定された位置に 新しい行を挿入する。
+            </summary>
+            <param name="dt">DataTable</param>
+            <param name="idx">行を挿入する位置（0の場合は、先頭に追加）</param>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableRowUp(System.Data.DataTable,System.Int32)">
+            <summary>
+            指定されたDataTableの 指定された行を １つ上に移動する。
+            </summary>
+            <param name="dt">DataTable</param>
+            <param name="rowIdx">行のインデックス</param>
+        </member>
+        <member name="M:CommonClass.LibData.DataTableRowDown(System.Data.DataTable,System.Int32)">
+            <summary>
+            指定されたDataTableの 指定された行を １つ下に移動する。
+            </summary>
+            <param name="dt">DataTable</param>
+            <param name="rowIdx">行のインデックス</param>
+        </member>
+        <member name="M:CommonClass.LibData.DataGridViewNotSortable(System.Windows.Forms.DataGridView)">
+            <summary>
+            指定されたDataGridViewの全列をソート不可にする。
+            </summary>
+            <param name="dataGridView">DataGridView</param>
+        </member>
+        <member name="M:CommonClass.LibData.DataGridViewSetDataTable(System.Windows.Forms.DataGridView,System.Data.DataTable)">
+            <summary>
+            指定されたDataGridViewに DataTableをセットします。
+            DataGridViewは全列ソート不可にします。
+            セルの大きさはAutoResizeします。
+            </summary>
+            <param name="dataGridView">DataGridView</param>
+            <param name="dt">DataTable</param>
+        </member>
+        <member name="T:CommonClass.LibDiag">
+            <summary>
+            ストップウォッチ等、ダイアグ関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibDiag.StopwatchStart">
+            <summary>
+            ストップウォッチをスタートさせる。
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibDiag.StopwatchStop">
+            <summary>
+            ストップウォッチをストップさせる。
+            </summary>
+            <returns>long | 計測時間（ms）</returns>
+        </member>
+        <member name="T:CommonClass.LibFile">
+            <summary>
+            ファイルやディレクトリ（フォルダ）関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibFile.CopyDirectory(System.String,System.String,CommonClass.LibLog,System.Boolean)">
+            <summary>
+            フォルダを再帰的にコピーするための関数
+            </summary>
+            <param name="sourceDirName">コピー元のフォルダのパス</param>
+            <param name="destDirName">コピー先のフォルダのパス</param>
+            <param name="libLog">LibLogクラスのインスタンス。指定するとファイルコピーごとにログを出す。（デフォルト：null）</param>
+            <param name="copySubDirs">true:再帰的にサブフォルダもコピーする（デフォルト）   false:しない</param>
+            <returns>bool | true:成功   false:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibFile.FileCopyNewer(System.String,System.String,CommonClass.LibLog)">
+            <summary>
+            ファイルをコピーします。
+            ※ただし、コピー元が新しい場合のみコピーします。
+            </summary>
+            <param name="srcFilePath">コピー元ファイルのパス</param>
+            <param name="dstFilePath">コピー先ファイルのパス</param>
+            <param name="libLog">LibLogクラスのインスタンス。指定するとファイルコピーごとにログを出す。（デフォルト：null）</param>
+            <returns>true:成功   false:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibFile.FileCopyWithTimeStamp(System.String,System.String,CommonClass.LibLog)">
+            <summary>
+            ファイルコピーを行います。タイムスタンプもコピーします。
+            </summary>
+            <param name="srcFilePath">コピー元のファイルのパス</param>
+            <param name="dstFilePath">コピー先のファイルのパス</param>
+            <param name="libLog">LibLogクラスのインスタンス。指定するとファイルコピーごとにログを出す。（デフォルト：null）</param>
+            <returns>bool | true:成功   false:失敗</returns>
+        </member>
+        <member name="T:CommonClass.LibLog">
+            <summary>
+            ログ出力用のクラス
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibLog.strError">
+            <summary>
+            エラーメッセージの最初に付ける文言
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibLog.strWarning">
+            <summary>
+            警告メッセージの最初に付ける文言
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibLog.Init(System.Windows.Forms.TextBox,System.Boolean)">
+            <summary>
+            LibLogを初期化します。
+            </summary>
+            <param name="textBox">ログを表示するテキストボックス</param>
+            <param name="dateTimeFlag">true:ログに日時を含める   false:含めない（デフォルト）</param>
+        </member>
+        <member name="M:CommonClass.LibLog.Clear">
+            <summary>
+            ログを表示するテキストボックスの内容をクリアします。
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibLog.WriteLine(System.String)">
+            <summary>
+            メッセージをログに出力します。改行も出力します。
+            </summary>
+            <param name="message">メッセージ</param>
+        </member>
+        <member name="M:CommonClass.LibLog.WriteLineError(System.String)">
+            <summary>
+            エラーメッセージをログに出力します。改行も出力します。
+            </summary>
+            <param name="message">エラーメッセージ</param>
+        </member>
+        <member name="M:CommonClass.LibLog.WriteLineWarning(System.String)">
+            <summary>
+            警告メッセージをログに出力します。改行も出力します。
+            </summary>
+            <param name="message">警告メッセージ</param>
+        </member>
+        <member name="M:CommonClass.LibLog.Write(System.String)">
+            <summary>
+            メッセージをログに出力します。
+            </summary>
+            <param name="message">メッセージ</param>
+        </member>
+        <member name="T:CommonClass.LibMath">
+            <summary>
+            数学関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibMath.GetRmse(System.Collections.Generic.List{System.Single},System.Collections.Generic.List{System.Single})">
+            <summary>
+            誤差RMSE(Root Mean Square Error)を求める
+            </summary>
+            <param name="predictValues">予測した値のリスト</param>
+            <param name="correctValues">正解の値のリスト</param>
+            <returns>float | 誤差</returns>
+        </member>
+        <member name="M:CommonClass.LibMath.GetRmsle(System.Collections.Generic.List{System.Single},System.Collections.Generic.List{System.Single})">
+            <summary>
+            誤差RMSLE(Root Mean Square Log Error)を求める
+            ※本当は predictValues は >= 0 でないと駄目
+            </summary>
+            <param name="predictValues">予測した値のリスト</param>
+            <param name="correctValues">正解の値のリスト</param>
+            <returns>float | 誤差</returns>
+        </member>
+        <member name="T:CommonClass.LibOs">
+            <summary>
+            OS関連のクラス（シャットダウンやWifi等）
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibOs.ExecCmd(System.String)">
+            <summary>
+            コマンドプロンプトで指定されたコマンドを実行します。
+            </summary>
+            <param name="command">コマンド</param>
+        </member>
+        <member name="M:CommonClass.LibOs.ConnectWifi(System.String)">
+            <summary>
+            指定されたSSIDの Wi-Fiを接続します。
+            </summary>
+            <param name="ssid">SSID</param>
+        </member>
+        <member name="M:CommonClass.LibOs.DisconnectWifi">
+            <summary>
+            現在接続中のWi-Fiを切断します。
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibOs.Shutdown">
+            <summary>
+            確認のメッセージボックスを出した後、Windowsをシャットダウンします。
+            </summary>
+            <returns>bool | true:成功   false:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibOs.Restart">
+            <summary>
+            確認のメッセージボックスを出した後、Windowsを再起動します。
+            </summary>
+            <returns>bool | true:成功   false:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibOs.SignOut">
+            <summary>
+            確認のメッセージボックスを出した後、Windowsをサインアウトします。
+            </summary>
+            <returns>bool | true:成功   false:失敗</returns>
+        </member>
+        <member name="T:CommonClass.LibRandom">
+            <summary>
+            ランダム関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibRandom.NextDouble">
+            <summary>
+            0.0 以上 1.0 未満のランダムな浮動小数点数を返します。
+            </summary>
+            <returns>乱数</returns>
+        </member>
+        <member name="M:CommonClass.LibRandom.Next(System.Int32)">
+            <summary>
+            指定した最大値より小さい 0 以上のランダムな整数を返します。
+            </summary>
+            <param name="maxValue">最大値（含まない）</param>
+            <returns>ランダムな整数</returns>
+        </member>
+        <member name="T:CommonClass.LibSp">
+            <summary>
+            並列処理用のクラス（CUDA使用。SimpleParallel.dllが必要。）
+            Simpleと書いているけど、現状 あまりSimpleではないです。
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelDeviceSet">
+            <summary>
+            SimpleParallel.dllのSimpleParallelDeviceSet関数
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelSetShare">
+            <summary>
+            SimpleParallel.dllのSimpleParallelSetShare関数
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelMain">
+            <summary>
+            SimpleParallel.dllのSimpleParallelMain関数
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetOutput">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetOutput関数
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelDeviceReset">
+            <summary>
+            SimpleParallel.dllのSimpleParallelDeviceReset関数
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetShareArray">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetShareArray関数
+            </summary>
+            <returns>IntPtr | ホストPCのShareメモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetInput0Array">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetInput0Array関数
+            </summary>
+            <returns>IntPtr | ホストPCのInput0メモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetInputArray">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetInputArray関数
+            </summary>
+            <returns>IntPtr | ホストPCのInputメモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetOutputArray">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetOutputArray関数
+            </summary>
+            <returns>IntPtr | ホストPCのOutputメモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetThreadNum">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetThreadNum関数
+            </summary>
+            <returns>int | スレッド数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetShareNum">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetShareNum関数
+            </summary>
+            <returns>int | Shareパラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetInput0Num">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetInput0Num関数
+            </summary>
+            <returns>int | Input0パラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetInputNum">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetInputNum関数
+            </summary>
+            <returns>int | Inputパラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SimpleParallelGetOutputNum">
+            <summary>
+            SimpleParallel.dllのSimpleParallelGetOutputNum関数
+            </summary>
+            <returns>int | Outputパラメータの数</returns>
+        </member>
+        <member name="F:CommonClass.LibSp.threadNum">
+            <summary>
+            スレッド数
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.shareNum">
+            <summary>
+            Shareパラメータの数
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.input0Num">
+            <summary>
+            Input0パラメータの数
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.inputNum">
+            <summary>
+            Inputパラメータの数
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.outputNum">
+            <summary>
+            Outputパラメータの数
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.ptrShare">
+            <summary>
+            ホストPCのShareメモリのポインタ
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.ptrInput0">
+            <summary>
+            ホストPCのInput0メモリのポインタ
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.ptrInput">
+            <summary>
+            ホストPCのInputメモリのポインタ
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.ptrOutput">
+            <summary>
+            ホストPCのOutputメモリのポインタ
+            </summary>
+        </member>
+        <member name="F:CommonClass.LibSp.bIdx">
+            <summary>
+            threadのインデックス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibSp.DeviceSet">
+            <summary>
+            GPUデバイスの使用を開始します。
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SetShare">
+            <summary>
+            ホストPCのShareメモリをGPUデバイスのShareメモリにコピーします。
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.Main">
+            <summary>
+            GPUデバイス上でメイン処理（並列処理）を行います。
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetOutput">
+            <summary>
+            GPUデバイスのOutputメモリをホストPCのOutputメモリにコピーします。
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.DeviceReset">
+            <summary>
+            GPUデバイスの使用を終了します。
+            </summary>
+            <returns>int | 0:成功   0以外:失敗</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetShareArray">
+            <summary>
+            ホストPCのShareメモリのポインタを返します。
+            </summary>
+            <returns>IntPtr | ホストPCのShareメモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetInput0Array">
+            <summary>
+            ホストPCのInput0メモリのポインタを返します。
+            </summary>
+            <returns>IntPtr | ホストPCのInput0メモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetInputArray">
+            <summary>
+            ホストPCのInputメモリのポインタを返します。
+            </summary>
+            <returns>IntPtr | ホストPCのInputメモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetOutputArray">
+            <summary>
+            ホストPCのOutputメモリのポインタを返します。
+            </summary>
+            <returns>IntPtr | ホストPCのOutputメモリのポインタ</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetThreadNum">
+            <summary>
+            スレッド数を取得します。
+            </summary>
+            <returns>int | スレッド数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetShareNum">
+            <summary>
+            Shareパラメータの数を返します。
+            </summary>
+            <returns>int | Shareパラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetInput0Num">
+            <summary>
+            Input0パラメータの数を返します。
+            </summary>
+            <returns>int | Input0パラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetInputNum">
+            <summary>
+            Inputパラメータの数を返します。
+            </summary>
+            <returns>int | Inputパラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetOutputNum">
+            <summary>
+            Outputパラメータの数を返します。
+            </summary>
+            <returns>int | Outputパラメータの数</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetParams">
+            <summary>
+            各種パラメータを取得します。
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibSp.SetFS(System.Int32,System.Single)">
+            <summary>
+            floatのShareメモリ（配列）に値をセットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <param name="value">セットする値</param>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFS(System.Int32)">
+            <summary>
+            floatのShareメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFS(System.Int32,System.Int32)">
+            <summary>
+            floatのShareメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="blockIdx">threadのインデックス</param>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SetFI0(System.Int32,System.Single)">
+            <summary>
+            floatのInput0メモリ（配列）に値をセットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <param name="value">セットする値</param>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFI0(System.Int32)">
+            <summary>
+            floatのInput0メモリ（配列）の値をゲットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SetFI(System.Int32,System.Single)">
+            <summary>
+            floatのInputメモリ（配列）に値をセットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <param name="value">セットする値</param>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFI(System.Int32)">
+            <summary>
+            floatのInputメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFI(System.Int32,System.Int32)">
+            <summary>
+            floatのInputメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="blockIdx">threadのインデックス</param>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFO(System.Int32)">
+            <summary>
+            floatのOutputメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFO(System.Int32,System.Int32)">
+            <summary>
+            floatのOutputメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="blockIdx">threadのインデックス</param>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SetFSAry(System.Int32,System.Int32,System.Single)">
+            <summary>
+            floatのShareメモリ（配列）に値をセットします。
+            </summary>
+            <param name="aryOffset">配列のオフセット</param>
+            <param name="idx">配列内のインデックス</param>
+            <param name="value">セットする値</param>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFSAry(System.Int32,System.Int32)">
+            <summary>
+            floatのShareメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="aryOffset">配列のオフセット</param>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SetFI0Ary(System.Int32,System.Int32,System.Single)">
+            <summary>
+            floatのInput0メモリ（配列）に値をセットします。
+            </summary>
+            <param name="aryOffset">配列のオフセット</param>
+            <param name="idx">配列内のインデックス</param>
+            <param name="value">セットする値</param>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFI0Ary(System.Int32,System.Int32)">
+            <summary>
+            floatのInput0メモリ（配列）の値をゲットします。
+            </summary>
+            <param name="aryOffset">配列のオフセット</param>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="M:CommonClass.LibSp.SetFIAry(System.Int32,System.Int32,System.Single)">
+            <summary>
+            floatのInputメモリ（配列）に値をセットします。
+            </summary>
+            <param name="aryOffset">配列のオフセット</param>
+            <param name="idx">配列内のインデックス</param>
+            <param name="value">セットする値</param>
+        </member>
+        <member name="M:CommonClass.LibSp.GetFIAry(System.Int32,System.Int32)">
+            <summary>
+            floatのInputメモリ（配列）の値をゲットします。
+            </summary>
+            <param name="aryOffset">配列のオフセット</param>
+            <param name="idx">配列内のインデックス</param>
+            <returns>float | ゲットした値</returns>
+        </member>
+        <member name="T:CommonClass.LibStr">
+            <summary>
+            文字列関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibStr.ConvertEscapeSequence(System.String)">
+            <summary>
+            指定された文字列内のエスケープシーケンスを変換した文字列を返します。
+            文字列内の"\\"を'\'に変換します。
+            文字列内の"\n"をLFに変換します。
+            文字列内の"\r"をCRに変換します。
+            文字列内の"\t"をタブに変換します。
+            文字列内の"\0"を空文字に変換します。
+            </summary>
+            <param name="str">変換する文字列</param>
+            <returns>string | 変換後の文字列</returns>
+        </member>
+        <member name="T:CommonClass.LibTime">
+            <summary>
+            日時関連のクラス
+            </summary>
+        </member>
+        <member name="M:CommonClass.LibTime.Get_YYYYMMDD_HHMMSS_">
+            <summary>
+            現在日時（_YYYYMMDD_HHMMSS_）を文字列として返す。
+            </summary>
+            <returns>string | 現在日時の文字列</returns>
+        </member>
+    </members>
+</doc>
